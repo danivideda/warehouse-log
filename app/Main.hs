@@ -1,12 +1,8 @@
 module Main where
 
-import Module.Item (LogItem, description, itemId, itemName, parseItem, storage)
+import Helper (prompt)
+import Module.Item (LogItem, addNewItem, description, itemId, itemName, parseItem, storage)
 import Module.Message (LogMessage)
-
-prompt :: String -> IO String
-prompt text = do
-    putStr text
-    getLine
 
 showItem :: [LogItem] -> String
 showItem [] = replicate 58 '='
@@ -28,7 +24,9 @@ runProgram items messages = do
     case choice of
         "a" -> putStrLn "You choose A"
         "b" -> putStrLn "You choose B"
-        "c" -> putStrLn "You choose C"
+        "c" -> do
+            newItems <- addNewItem items
+            runProgram newItems messages
         _ -> do
             empty <- prompt "Wrong input! Press enter to try again."
             runProgram items messages
