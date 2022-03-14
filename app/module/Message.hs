@@ -1,4 +1,4 @@
-module Message where
+module Module.Message where
 
 import Data.Time
 import Data.Time.Clock.POSIX (getPOSIXTime)
