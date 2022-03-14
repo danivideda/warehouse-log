@@ -2,12 +2,12 @@ module Module.Message where
 
 import Data.Time
 import Data.Time.Clock.POSIX (getPOSIXTime)
-import Module.Item (Item, parseItem)
+import Module.Item (LogItem, parseItem)
 import Module.Person (Person)
 
 data LogMessage
     = LogMessage
-        { item :: Item
+        { item :: LogItem
         , person :: Person
         , quantity :: Int
         , timestamp :: Int

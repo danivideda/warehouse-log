@@ -1,6 +1,6 @@
 module Module.Item where
 
-data Item
+data LogItem
     = Item
         { itemId :: Int
         , itemName :: String
@@ -10,15 +10,15 @@ data Item
     | UnknownItem
     deriving (Show)
 
-parseItem :: String -> [Item]
+parseItem :: String -> [LogItem]
 parseItem rawContent = map parseSingleItem (lines rawContent)
 
-parseSingleItem :: String -> Item
+parseSingleItem :: String -> LogItem
 parseSingleItem str = case words str of
     (i : n : s : d) -> makeItem i n s d
     _ -> UnknownItem
 
-makeItem :: String -> String -> String -> [String] -> Item
+makeItem :: String -> String -> String -> [String] -> LogItem
 makeItem itemId itemName storage description =
     Item
         { itemId = read itemId
