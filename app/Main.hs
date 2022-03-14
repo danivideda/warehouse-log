@@ -1,3 +1,8 @@
+module Main where
+
+import Item
+import Person
+
 data LogMessage = LogMessage
     { name :: String
     , id :: String
@@ -7,3 +12,6 @@ data LogMessage = LogMessage
     }
 
 data Status = IN | OUT
+
+main = do
+    putStrLn "done"
