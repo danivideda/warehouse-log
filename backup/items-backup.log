@@ -1,6 +1,7 @@
-1 Chair 200 Home furniture
+1 Chair 100 Home furniture
 2 Table 200 Home furniture
 3 Cupboard 20 Living Room furniture
 4 Glass 20 Kitchen appliances
-5 Plate 239 Kitchen appliances
-6 Spoon 210 Kitchen appliances
+5 Plate 500 Kitchen appliances
+6 Spoon 500 Kitchen appliances
+7 Fork 500 Kitchen appliances

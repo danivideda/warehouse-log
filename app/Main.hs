@@ -10,16 +10,18 @@ import System.IO (hFlush, stdout)
 
 runProgram :: [LogItem] -> [LogMessage] -> IO ()
 runProgram items messages = do
+    putStrLn "\n\n\n=============== Warehouse Logging Software ==============="
     putStrLn $ replicate 58 '='
     putStrLn $ showItem items
-    choice <- prompt "(a) Show all item  (b) Restock item  (c) Take item  (d) Add new item  (e) Exit program\n"
+    putStrLn "(a) Show all item  (b) Restock item  (c) Take item  (d) Add new item  (e) Exit program"
+    choice <- prompt "Input choice: "
     case choice of
         "a" -> do
             putStrLn $ showAllItem items
             empty <- prompt "Press enter to go back"
             runProgram items messages
         "b" -> do
-            putStrLn "You're about to restock an item: "
+            putStrLn "You're about to restock some item: "
             -- Insert ItemID
             putStr "Insert ItemID: "
             hFlush stdout
@@ -49,7 +51,7 @@ runProgram items messages = do
             emptyPrompt <- prompt "Press enter to continue."
             runProgram newRestockedItems messages
         "c" -> do
-            putStrLn "You're about to take out an item: "
+            putStrLn "You're about to take out some item: "
             -- Insert ItemID
             putStr "Insert ItemID: "
             hFlush stdout
@@ -96,7 +98,9 @@ runProgram items messages = do
             parseLogMessage logMessage
             emptyPrompt <- prompt "Successfully added new item! Press enter to continue."
             runProgram newItems messages
-        "e" -> putStrLn "Goodbye!"
+        "e" -> do
+            putStrLn "Exiting program..."
+            putStrLn "Goodbye!"
         _ -> do
             empty <- prompt "Wrong input! Press enter to try again."
             runProgram items messages
@@ -140,6 +144,4 @@ showAllItem (item : rest) =
 main :: IO ()
 main = do
     items <- fmap parseItem (readFile "log/items.log")
-    -- messages <- fmap parseMessage (readFile "log/messages.log")
-    putStrLn "\n\n=============== Warehouse Logging Software ==============="
     runProgram items []

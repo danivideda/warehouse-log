@@ -1,13 +1,12 @@
-ItemID: 1 Quantity: 200 Timestamp: 1647334581109575 Status: NEW
-ItemID: 2 Quantity: 200 Timestamp: 1647334597628446 Status: NEW
-ItemID: 3 Quantity: 20 Timestamp: 1647335480677668 Status: NEW
-ItemID: 0 Quantity: 0 Timestamp: 1647337924632885 Status: ERR
-ItemID: 1 Quantity: 210 Timestamp: 1647337958013646 Status: IN
-ItemID: 1 Quantity: 233 Timestamp: 1647337973195051 Status: IN
-ItemID: 1 Quantity: 253 Timestamp: 1647338214 Status: IN
-ItemID: 1 Quantity: 273 Timestamp: 1647338225 Status: IN
-ItemID: 1 Quantity: 293 Timestamp: 1647338233 Status: IN
-ItemID: 1 Quantity: 20 Timestamp: 1647338452 Status: IN
-ItemID: 1 Quantity: 13 Timestamp: 1647339919 Status: OUT
-ItemID: 4 Quantity: 20 Timestamp: 1647340171 Status: NEW
-ItemID: 3 Quantity: 20 Timestamp: 1647340221 Status: IN
+ItemID: 1 | Status: NEW | Quantity: 100 | Timestamp: 1647341755
+ItemID: 2 | Status: NEW | Quantity: 200 | Timestamp: 1647341851
+ItemID: 3 | Status: NEW | Quantity: 20 | Timestamp: 1647341952
+ItemID: 1 | Status: IN | Quantity: 20 | Timestamp: 1647341958
+ItemID: 4 | Status: NEW | Quantity: 20 | Timestamp: 1647342273
+ItemID: 5 | Status: NEW | Quantity: 500 | Timestamp: 1647342323
+ItemID: 6 | Status: NEW | Quantity: 500 | Timestamp: 1647342349
+ItemID: 7 | Status: NEW | Quantity: 500 | Timestamp: 1647342359
+ItemID: 3 | Status: IN | Quantity: 50 | Timestamp: 1647342389
+ItemID: 5 | Status: IN | Quantity: 100 | Timestamp: 1647342408
+ItemID: 7 | Status: OUT | Quantity: 400 | Timestamp: 1647342424
+ItemID: 5 | Status: OUT | Quantity: 400 | Timestamp: 1647342435

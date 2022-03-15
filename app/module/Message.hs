@@ -15,7 +15,7 @@ data LogMessage
     | Unknown
     deriving (Show)
 
-data Status = IN | OUT | NEW | REMOVE | ERR deriving (Show, Read)
+data Status = IN | OUT | NEW | ERR deriving (Show, Read)
 
 secondSinceEpoch :: UTCTime -> Int
 secondSinceEpoch =
@@ -50,11 +50,11 @@ parseLogMessage message = do
     let parsedLogMessage =
             "ItemID: "
                 ++ show (item message)
-                ++ " Quantity: "
-                ++ show (quantity message)
-                ++ " Timestamp: "
-                ++ show (currentTime)
-                ++ " Status: "
+                ++ " | Status: "
                 ++ show (status message)
+                ++ " | Quantity: "
+                ++ show (quantity message)
+                ++ " | Timestamp: "
+                ++ show (currentTime)
                 ++ "\n"
     appendFile "log/messages.log" parsedLogMessage
