@@ -1,2 +1,10 @@
-1 Quantity: 200 Timestamp: 1647326668551901 Status: IN
-2 Quantity: 200 Timestamp: 1647326698687374 Status: IN
+ItemID: 1 Quantity: 200 Timestamp: 1647334581109575 Status: NEW
+ItemID: 2 Quantity: 200 Timestamp: 1647334597628446 Status: NEW
+ItemID: 3 Quantity: 20 Timestamp: 1647335480677668 Status: NEW
+ItemID: 0 Quantity: 0 Timestamp: 1647337924632885 Status: ERR
+ItemID: 1 Quantity: 210 Timestamp: 1647337958013646 Status: IN
+ItemID: 1 Quantity: 233 Timestamp: 1647337973195051 Status: IN
+ItemID: 1 Quantity: 253 Timestamp: 1647338214 Status: IN
+ItemID: 1 Quantity: 273 Timestamp: 1647338225 Status: IN
+ItemID: 1 Quantity: 293 Timestamp: 1647338233 Status: IN
+ItemID: 1 Quantity: 20 Timestamp: 1647338452 Status: IN

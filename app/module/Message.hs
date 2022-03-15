@@ -15,18 +15,41 @@ data LogMessage
     | Unknown
     deriving (Show)
 
-data Status = IN | OUT deriving (Show, Read)
+data Status = IN | OUT | NEW | REMOVE | ERR deriving (Show, Read)
 
-nanosSinceEpoch :: UTCTime -> Int
-nanosSinceEpoch =
-    floor . (1e6 *) . nominalDiffTimeToSeconds . utcTimeToPOSIXSeconds
+secondSinceEpoch :: UTCTime -> Int
+secondSinceEpoch =
+    floor . nominalDiffTimeToSeconds . utcTimeToPOSIXSeconds
+
+makeLogMessage :: LogItem -> String -> IO LogMessage
+makeLogMessage item status = do
+    u <- getCurrentTime
+    let currentTime = secondSinceEpoch u
+        message =
+            if item == UnknownItem
+                then
+                    LogMessage
+                        { item = 0
+                        , quantity = 0
+                        , timestamp = currentTime
+                        , status = ERR
+                        }
+                else
+                    LogMessage
+                        { item = itemId item
+                        , quantity = storage item
+                        , timestamp = currentTime
+                        , status = read status :: Status
+                        }
+    return message
 
 parseLogMessage :: LogMessage -> IO ()
 parseLogMessage message = do
     u <- getCurrentTime
-    let currentTime = nanosSinceEpoch u
+    let currentTime = secondSinceEpoch u
     let parsedLogMessage =
-            show (item message)
+            "ItemID: "
+                ++ show (item message)
                 ++ " Quantity: "
                 ++ show (quantity message)
                 ++ " Timestamp: "
@@ -34,18 +57,4 @@ parseLogMessage message = do
                 ++ " Status: "
                 ++ show (status message)
                 ++ "\n"
-
     appendFile "log/messages.log" parsedLogMessage
-
-makeLogMessage :: LogItem -> String -> IO LogMessage
-makeLogMessage item status = do
-    u <- getCurrentTime
-    let currentTime = nanosSinceEpoch u
-        message =
-            LogMessage
-                { item = itemId item
-                , quantity = storage item
-                , timestamp = currentTime
-                , status = read status :: Status
-                }
-    return message
