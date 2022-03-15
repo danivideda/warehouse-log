@@ -28,7 +28,10 @@ addNewItem oldLogItemList = do
             Nothing -> return 0
     description <- prompt "Description: "
 
-    let lastId = itemId $ last oldLogItemList
+    let lastId =
+            if null oldLogItemList
+                then 0
+                else itemId $ last oldLogItemList
         newId = lastId + 1
         newLogItem =
             LogItem
