@@ -36,5 +36,6 @@ executable warehouse-log
     -- other-extensions:
     build-depends:    base ^>=4.14.3.0
                     , time
+                    , mtl
     hs-source-dirs:   app
     default-language: Haskell2010

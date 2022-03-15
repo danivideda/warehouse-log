@@ -14,8 +14,9 @@ data LogItem
 
 addNewItem :: [LogItem] -> IO [LogItem]
 addNewItem oldLogItemList = do
-    putStrLn "You're about to add new item into the inventory, please fill the information below: \n"
+    putStrLn "\nYou're about to add new item into the inventory, please fill the information below: "
     name <- prompt "Item name: "
+    storage <- prompt "Quantity: "
     description <- prompt "Description: "
 
     let lastId = itemId $ last oldLogItemList
@@ -24,14 +25,16 @@ addNewItem oldLogItemList = do
             LogItem
                 { itemId = newId
                 , itemName = name
-                , storage = 0
+                , storage = read storage
                 , description = description
                 }
-        newLogItemList = oldLogItemList ++ [newLogItem]
-    parseLogItem newLogItemList
-    putStrLn $ "Successfully added new item: " ++ name
-    emptyPrompt <- prompt "Press enter to continue."
+    let newLogItemList = oldLogItemList ++ [newLogItem]
+    -- parseLogItem newLogItemList
     return newLogItemList
+
+restockItem :: [LogItem] -> Int -> IO [LogItem]
+restockItem logItemList choiceId = do
+    return logItemList
 
 parseLogItem :: [LogItem] -> IO ()
 parseLogItem logItemList = do
@@ -47,7 +50,7 @@ parseLogItem logItemList = do
                 ++ description logItem
                 ++ "\n"
                 ++ convertToLog rest
-    let parsedLogItem = convertToLog logItemList
+    let parsedLogItem = init $ convertToLog logItemList -- using init to remove the last \n at the end of the .log
     writeFile "log/items.log" parsedLogItem
 
 parseItem :: String -> [LogItem]
