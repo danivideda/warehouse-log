@@ -1,5 +1,7 @@
 module Module.Item where
 
+import Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
+import Control.Monad.Trans.Writer (WriterT, execWriterT, runWriterT, tell)
 import Helper (MaybeT, liftMaybeT, maybeReadInt, prompt)
 
 data LogItem
@@ -30,6 +32,11 @@ addNewItem oldLogItemList = do
                 }
     let newLogItemList = oldLogItemList ++ [newLogItem]
     return newLogItemList
+
+logAdded :: ReaderT Int IO ()
+logAdded = do e <- ReaderT (return :: Int -> IO Int) -- This is similar to "Reader id" earlier.
+            liftReaderT $ print "boo"
+            liftReaderT $ print $ "value of e: " ++ show e
 
 restockItem :: [LogItem] -> Int -> IO [LogItem]
 restockItem logItemList choiceId = do

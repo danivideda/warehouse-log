@@ -1,5 +1,7 @@
 module Main where
 
+import Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
+import Control.Monad.Trans.Writer (WriterT, execWriterT, runWriterT, tell)
 import Helper (prompt)
 import Module.Item (LogItem, addNewItem, description, itemId, itemName, parseItem, parseLogItem, storage)
 import Module.Message (LogMessage)
@@ -53,6 +55,7 @@ runProgram items messages = do
             empty <- prompt "Wrong input! Press enter to try again."
             runProgram items messages
 
+main :: IO ()
 main = do
     items <- fmap parseItem (readFile "log/items.log")
     -- messages <- fmap parseMessage (readFile "log/messages.log")
