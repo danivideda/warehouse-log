@@ -4,7 +4,7 @@ import Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
 import Control.Monad.Trans.Writer (WriterT, execWriterT, runWriterT, tell)
 import Data.List
 import Helper (MaybeT, liftMaybeT, maybeReadInt, prompt, runMaybeT)
-import Module.Item (LogItem (UnknownItem), addNewItem, description, itemId, itemName, parseItem, parseLogItem, restockItem, storage)
+import Module.Item (LogItem (UnknownItem), addNewItem, description, itemId, itemName, parseItem, parseLogItem, restockItem, storage, takeItem)
 import Module.Message (LogMessage, makeLogMessage, parseLogMessage)
 import System.IO (hFlush, stdout)
 
@@ -19,6 +19,7 @@ runProgram items messages = do
             empty <- prompt "Press enter to go back"
             runProgram items messages
         "b" -> do
+            putStrLn "You're about to restock an item: "
             -- Insert ItemID
             putStr "Insert ItemID: "
             hFlush stdout
@@ -28,7 +29,7 @@ runProgram items messages = do
                     (Just a) -> return a
                     Nothing -> return 0
             -- Insert Amount
-            putStr "Insert amount: "
+            putStr "Insert amount to restock: "
             hFlush stdout
             amount <- do
                 result <- runMaybeT maybeReadInt
@@ -47,7 +48,37 @@ runProgram items messages = do
             parseLogMessage logMessage
             emptyPrompt <- prompt "Press enter to continue."
             runProgram newRestockedItems messages
-        "c" -> putStrLn "REMOVE ITEM -TODO-"
+        "c" -> do
+            putStrLn "You're about to take out an item: "
+            -- Insert ItemID
+            putStr "Insert ItemID: "
+            hFlush stdout
+            choice <- do
+                result <- runMaybeT maybeReadInt
+                case result of
+                    (Just a) -> return a
+                    Nothing -> return 0
+            -- Insert Amount
+            putStr "Insert amount to take: "
+            hFlush stdout
+            amount <- do
+                result <- runMaybeT maybeReadInt
+                case result of
+                    (Just a) -> return a
+                    Nothing -> return 0
+
+            updatedItems <- takeItem items choice amount
+            parseLogItem updatedItems
+
+            let changedItem = find (\item -> itemId item == choice) updatedItems
+                extractItem :: Maybe LogItem -> LogItem
+                extractItem (Just a) = a
+                extractItem Nothing = UnknownItem
+
+            logMessage <- makeLogMessage ((extractItem changedItem){storage = amount}) "OUT"
+            parseLogMessage logMessage
+            emptyPrompt <- prompt "Press enter to continue."
+            runProgram updatedItems messages
         "d" -> do
             putStrLn "\nYou're about to add new item into the inventory, please fill the information below: "
             name <- prompt "Item name: "

@@ -58,6 +58,37 @@ restockItem oldLogItemList choice amount = do
 
     return restockedLogItemList
 
+takeItem :: [LogItem] -> Int -> Int -> IO [LogItem]
+takeItem oldLogItemList choice amount = do
+    let itemExist = find (\item -> (itemId item) == choice) oldLogItemList
+
+        extractItem :: Maybe LogItem -> LogItem
+        extractItem (Just a) = a
+        extractItem Nothing = UnknownItem
+
+        replaceItem :: [LogItem] -> LogItem -> Int -> [LogItem]
+        replaceItem [] chosenItem amount = []
+        replaceItem (item : rest) chosenItem amount
+            | item == chosenItem = [item{storage = storage item - amount}] ++ replaceItem rest chosenItem amount
+            | otherwise = [item] ++ replaceItem rest chosenItem amount
+
+    let updatedLogItemList =
+            if (extractItem itemExist) == UnknownItem
+                then oldLogItemList
+                else
+                    if amount > (storage $ extractItem itemExist)
+                        then oldLogItemList
+                        else replaceItem oldLogItemList (extractItem itemExist) amount
+
+    if (extractItem itemExist) == UnknownItem
+        then putStrLn "Unknown item inserted"
+        else
+            if amount > (storage $ extractItem itemExist)
+                then putStrLn "Not enough storage quantity to take items."
+                else putStrLn "Successfully took item!"
+
+    return updatedLogItemList
+
 parseLogItem :: [LogItem] -> IO ()
 parseLogItem logItemList = do
     let convertToLog :: [LogItem] -> String
