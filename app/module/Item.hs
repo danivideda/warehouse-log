@@ -2,7 +2,8 @@ module Module.Item where
 
 import Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
 import Control.Monad.Trans.Writer (WriterT, execWriterT, runWriterT, tell)
-import Helper (MaybeT, liftMaybeT, maybeReadInt, prompt)
+import Helper (MaybeT, liftMaybeT, maybeReadInt, prompt, runMaybeT)
+import System.IO (hFlush, stdout)
 
 data LogItem
     = LogItem
@@ -18,7 +19,13 @@ addNewItem :: [LogItem] -> IO [LogItem]
 addNewItem oldLogItemList = do
     putStrLn "\nYou're about to add new item into the inventory, please fill the information below: "
     name <- prompt "Item name: "
-    storage <- prompt "Quantity: "
+    putStr "Quantity: "
+    hFlush stdout
+    storage <- do
+        result <- runMaybeT maybeReadInt
+        case result of
+            (Just a) -> return a
+            Nothing -> return 0
     description <- prompt "Description: "
 
     let lastId = itemId $ last oldLogItemList
@@ -27,16 +34,11 @@ addNewItem oldLogItemList = do
             LogItem
                 { itemId = newId
                 , itemName = name
-                , storage = read storage
+                , storage = storage
                 , description = description
                 }
     let newLogItemList = oldLogItemList ++ [newLogItem]
     return newLogItemList
-
-logAdded :: ReaderT Int IO ()
-logAdded = do e <- ReaderT (return :: Int -> IO Int) -- This is similar to "Reader id" earlier.
-            liftReaderT $ print "boo"
-            liftReaderT $ print $ "value of e: " ++ show e
 
 restockItem :: [LogItem] -> Int -> IO [LogItem]
 restockItem logItemList choiceId = do
