@@ -5,8 +5,23 @@ import Module.Item (LogItem, addNewItem, description, itemId, itemName, parseIte
 import Module.Message (LogMessage)
 
 showItem :: [LogItem] -> String
-showItem [] = replicate 58 '='
-showItem (item : rest) =
+showItem items = showItemFunc (length items) (take 2 items)
+  where
+    showItemFunc count [] = "...and " ++ show (count - 2) ++ " more." ++ "\n" ++ replicate 58 '='
+    showItemFunc count (item : rest) =
+        "ID: " ++ show (itemId item)
+            ++ "\nName: "
+            ++ itemName item
+            ++ "\nStorage: "
+            ++ show (storage item)
+            ++ "\nDescription: "
+            ++ description item
+            ++ "\n-----------------------------\n"
+            ++ showItemFunc count rest
+
+showAllItem :: [LogItem] -> String
+showAllItem [] = replicate 58 '='
+showAllItem (item : rest) =
     "ID: " ++ show (itemId item)
         ++ "\nName: "
         ++ itemName item
@@ -15,21 +30,25 @@ showItem (item : rest) =
         ++ "\nDescription: "
         ++ description item
         ++ "\n-----------------------------\n"
-        ++ showItem rest
+        ++ showAllItem rest
 
 runProgram :: [LogItem] -> [LogMessage] -> IO ()
 runProgram items messages = do
     putStrLn $ showItem items
-    choice <- prompt "(a) Restock item  (b) Remove item (c) Add new item (d) Exit program\n"
+    choice <- prompt "(a) Show all item  (b) Restock item  (c) Remove item  (d) Add new item  (e) Exit program\n"
     case choice of
-        "a" -> putStrLn "You choose A"
+        "a" -> do
+            putStrLn $ showAllItem items
+            empty <- prompt "Press enter to go back"
+            runProgram items messages
         "b" -> putStrLn "You choose B"
-        "c" -> do
+        "c" -> putStrLn "You choose C"
+        "d" -> do
             newItems <- addNewItem items
             parseLogItem newItems
             emptyPrompt <- prompt "Successfully added new item! Press enter to continue."
             runProgram newItems messages
-        "d" -> putStrLn "Goodbye!"
+        "e" -> putStrLn "Goodbye!"
         _ -> do
             empty <- prompt "Wrong input! Press enter to try again."
             runProgram items messages
