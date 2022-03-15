@@ -1,6 +1,6 @@
 module Module.Item where
 
-import Helper (prompt)
+import Helper (MaybeT, liftMaybeT, maybeReadInt, prompt)
 
 data LogItem
     = LogItem
@@ -29,7 +29,6 @@ addNewItem oldLogItemList = do
                 , description = description
                 }
     let newLogItemList = oldLogItemList ++ [newLogItem]
-    -- parseLogItem newLogItemList
     return newLogItemList
 
 restockItem :: [LogItem] -> Int -> IO [LogItem]

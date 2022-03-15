@@ -41,8 +41,8 @@ runProgram items messages = do
             putStrLn $ showAllItem items
             empty <- prompt "Press enter to go back"
             runProgram items messages
-        "b" -> putStrLn "You choose B"
-        "c" -> putStrLn "You choose C"
+        "b" -> putStrLn "RESTOCK ITEM -TODO-"
+        "c" -> putStrLn "REMOVE ITEM -TODO-"
         "d" -> do
             newItems <- addNewItem items
             parseLogItem newItems
