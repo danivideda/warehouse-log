@@ -50,7 +50,7 @@ runProgram items messages = do
 
             logMessage <-
                 if extractedItem == UnknownItem
-                    then makeLogMessage extractedItem "IN"
+                    then makeLogMessage extractedItem "ERR"
                     else makeLogMessage (extractedItem{storage = amount}) "IN"
 
             parseLogMessage logMessage
@@ -87,8 +87,11 @@ runProgram items messages = do
 
             logMessage <-
                 if extractedItem == UnknownItem
-                    then makeLogMessage extractedItem "OUT"
-                    else makeLogMessage (extractedItem{storage = amount}) "OUT"
+                    then makeLogMessage extractedItem "ERR"
+                    else
+                        if amount > storage extractedItem
+                            then makeLogMessage (extractedItem{storage = 0}) "ERR"
+                            else makeLogMessage (extractedItem{storage = amount}) "OUT"
             parseLogMessage logMessage
             emptyPrompt <- prompt "Press enter to continue."
             runProgram updatedItems messages
