@@ -53,8 +53,11 @@ restockItem oldLogItemList choice amount = do
                 else replaceItem oldLogItemList (extractItem itemExist) amount
 
     if (extractItem itemExist) == UnknownItem
-        then putStrLn "Unknown item inserted"
-        else putStrLn "Successfully restocked item!"
+        then putStrLn "Item not found. Please check your ItemID"
+        else
+            if amount == 0
+                then putStrLn "Amount inserted is zero. Are you sure you've input it correctly?"
+                else putStrLn "Successfully restocked item!"
 
     return restockedLogItemList
 
@@ -81,11 +84,14 @@ takeItem oldLogItemList choice amount = do
                         else replaceItem oldLogItemList (extractItem itemExist) amount
 
     if (extractItem itemExist) == UnknownItem
-        then putStrLn "Unknown item inserted"
+        then putStrLn "Item not found. Please check your ItemID"
         else
             if amount > (storage $ extractItem itemExist)
                 then putStrLn "Not enough storage quantity to take items."
-                else putStrLn "Successfully took item!"
+                else
+                    if amount == 0
+                        then putStrLn "Amount inserted is zero. Are you've sure you input it correctly?"
+                        else putStrLn "Successfully restocked item!"
 
     return updatedLogItemList
 

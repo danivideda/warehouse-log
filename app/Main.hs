@@ -46,7 +46,13 @@ runProgram items messages = do
                 extractItem (Just a) = a
                 extractItem Nothing = UnknownItem
 
-            logMessage <- makeLogMessage ((extractItem changedItem){storage = amount}) "IN"
+            let extractedItem = extractItem changedItem
+
+            logMessage <-
+                if extractedItem == UnknownItem
+                    then makeLogMessage extractedItem "IN"
+                    else makeLogMessage (extractedItem{storage = amount}) "IN"
+
             parseLogMessage logMessage
             emptyPrompt <- prompt "Press enter to continue."
             runProgram newRestockedItems messages
@@ -77,7 +83,12 @@ runProgram items messages = do
                 extractItem (Just a) = a
                 extractItem Nothing = UnknownItem
 
-            logMessage <- makeLogMessage ((extractItem changedItem){storage = amount}) "OUT"
+            let extractedItem = extractItem changedItem
+
+            logMessage <-
+                if extractedItem == UnknownItem
+                    then makeLogMessage extractedItem "OUT"
+                    else makeLogMessage (extractedItem{storage = amount}) "OUT"
             parseLogMessage logMessage
             emptyPrompt <- prompt "Press enter to continue."
             runProgram updatedItems messages
